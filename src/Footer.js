@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <div className = "container">
@@ -8,14 +9,10 @@ const Footer = () => {
         </div>
         <div className="col-12 col-md-6 my-2">
           <div class="d-flex">
-            /*<div class="link-element ml-0"><a href="https://www.linkedin.com/in/lesurafel/"><i class="fab fa-linkedin"></i></a></div>
-            <div class="link-element"><a href="https://www.github.com/lesurafel"><i class="fab fa-github"></i></a></div>
-            <div class="link-element"><a href="https://www.facebook.com/surafel.mehari.3"><i class="fab fa-facebook-f"></i></a></div>
-            <div class="link-element mr-4"><a href="#"><i class="fab fa-twitter"></i></a></div>*/
-            <p>facebook</p>
-            <p>linkedin</p>
-            <p>github</p>
-            <p>twitter</p>
+            <Link to="/"><p className='px-1'>facebook</p></Link>
+            <Link to="/"><p className='px-1'>linkedin</p></Link>
+            <Link to="/"><p className='px-1'>github</p></Link>
+            <Link to="/"><p className='px-1'>twitter</p></Link>
           </div>
         </div>
       </div>
