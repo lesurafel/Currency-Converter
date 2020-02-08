@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import logo from './logo.svg';
+import logo from './images/logo.png';
+import backforth from './images/backforth.png';
 import { json, checkStatus } from './utils';
 
 const TopFourList = (props) => {
@@ -12,10 +13,10 @@ const TopFourList = (props) => {
 
   return (
     <div className="row">
-      <div className="col-12 my-3">
-        <Link to="/about/">Show more detail</Link>
+      <div className="col-12  mt-2 mt-md-4 mx-2 mx-md-4">
+        <Link to="/">Show more detail</Link>
       </div>
-      <div className="col-12 mt-3">
+      <div className="col-12 mt-3 mx-2 mx-md-4">
         <table className="table table-striped">
           <thead>
             <tr>
@@ -75,16 +76,21 @@ class convertExchange extends React.Component {
 
         <div className="container currencyConverter">
           <div className='row'>
-            <div className='col-2 pt-5'>
-              <Link className="navbar-brand" to="/"><img src={logo} height='80' width='100' alt="logo" /></Link>
+            <div className='col-2 pt-2 pt-md-5'>
+              <Link className="navbar-brand logo" to="/"><img src={logo} height='80' width='80' alt="logo" /></Link>
             </div>
-            <div className='col-8 pt-5 d-flex align-content-end '>
+            <div className='col-8 pt-2 pt-md-5 d-flex align-items-center'>
               <h2>Currency Converter</h2>
             </div>
           </div>
-          <form onSubmit={this.handleSubmit} className="my-4">
+          <div className='row'>
+            <div className='col-12 pt-3 d-flex justify-content-end align-items-end'>
+              <h2>Date</h2>
+            </div>
+          </div>
+          <form onSubmit={this.handleSubmit} className="my-1 my-md-4">
             <div className="row">
-              <div className="col-12 col-md-3 my-2">
+              <div className="col-12 col-md-3 my-1 my-md-2">
                 <label styClassName=''>Amount</label>
                 <input
                   type="text"
@@ -94,20 +100,20 @@ class convertExchange extends React.Component {
                 />
               </div>
               <div className="col-12 col-md-4 my-2">
-                <label styClassName=''>From</label>
-                <select id="input" className='country' noChange>
+                <label ClassName=''>From</label>
+                <select className="country">
                   <option>USD</option>
                   <option>EUR</option>
                   <option>GBT</option>
                   <option>CHN</option>
                 </select>
               </div>
-              <div className="d-none col-md-1 d-md-block my-2">
-                <ion-icon src="" onClick ></ion-icon>
+              <div className="d-none col-md-1 pt-4 px-1 d-md-flex align-items-center">
+                <img src={backforth} height='60' width='60' alt="12345" />
               </div>
               <div className="col-12 col-md-4  my-2">
-                <label styClassName=''>To</label>
-                <select id="input" className='country' noChange>
+                <label ClassName=''>To</label>
+                <select className="country">
                   <option>USD</option>
                   <option>EUR</option>
                   <option>GBT</option>
