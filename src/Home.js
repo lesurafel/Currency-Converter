@@ -2,7 +2,25 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import logo from './images/logo.png';
 import backforth from './images/backforth.png';
+import {fullName} from './FullCountryName.js'
 import { json, checkStatus } from './utils';
+
+const GenerateOptionButton = (props) => {
+  const keyName = props.keyName;
+  return (
+    <option name={keyName}> {keyName} </option>
+  )
+}
+
+const FillMenu = (props) => {
+  const keyNames = Object.keys(fullName);
+  return (
+    <select className="country">
+      <option name={props.name}>{props.name}</option>
+      {keyNames.map(keyName => <GenerateOptionButton key={keyName} keyName = {keyName}/>)}
+    </select>
+  );
+}
 
 const TopFourList = (props) => {
   /*const {
@@ -51,12 +69,12 @@ const TopFourList = (props) => {
 class convertExchange extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    /*this.state = {
       base: '',
       date:'',
       rates: {},
       error: '',
-    };
+    };*/
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -69,7 +87,7 @@ class convertExchange extends React.Component {
 
   }
   render() {
-    const { searchTerm, results, error } = this.state;
+    //const { searchTerm, results, error } = this.state;
     return (
       <fragment>
       <div id='main' className='container-fluid' >
@@ -91,7 +109,7 @@ class convertExchange extends React.Component {
           <form onSubmit={this.handleSubmit} className="my-1 my-md-4">
             <div className="row">
               <div className="col-12 col-md-3 my-1 my-md-2">
-                <label styClassName=''>Amount</label>
+                <label className=''>Amount</label>
                 <input
                   type="text"
                   className="mr-sm-2 amount"
@@ -100,25 +118,15 @@ class convertExchange extends React.Component {
                 />
               </div>
               <div className="col-12 col-md-4 my-2">
-                <label ClassName=''>From</label>
-                <select className="country">
-                  <option>USD</option>
-                  <option>EUR</option>
-                  <option>GBT</option>
-                  <option>CHN</option>
-                </select>
+                <label className=''>From</label>
+                <FillMenu name={'USD'}  />
               </div>
-              <div className="d-none col-md-1 pt-4 px-1 d-md-flex align-items-center">
+              <div className="d-none col-md-1 pt-md-4 px-sm-1 d-md-flex align-items-center">
                 <img src={backforth} height='60' width='60' alt="12345" />
               </div>
               <div className="col-12 col-md-4  my-2">
-                <label ClassName=''>To</label>
-                <select className="country">
-                  <option>USD</option>
-                  <option>EUR</option>
-                  <option>GBT</option>
-                  <option>CHN</option>
-                </select>
+                <label className=''>To</label>
+                <FillMenu name={'EUR'}/>
               </div>
               <div className="d-none col-md-1 d-md-block my-2">
               </div>
