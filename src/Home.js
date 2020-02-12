@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import logo from './images/logo.png';
 import backforth from './images/backforth.png';
 import {fullName} from './FullCountryName.js'
-import { json, checkStatus } from './utils';
+import ShowSomeDetails from './ShowSomeDetails.js';
+/*import { json, checkStatus } from './utils';*/
 
 const GenerateOptionButton = (props) => {
   const keyName = props.keyName;
@@ -23,44 +24,13 @@ const FillMenu = (props) => {
 }
 
 const TopFourList = (props) => {
-  /*const {
-    base,
-    date,
-    rates,
-  } = props.exchange;*/
-
   return (
     <div className="row">
       <div className="col-12  mt-2 mt-md-4 mx-2 mx-md-4">
         <Link to="/">Show more detail</Link>
       </div>
       <div className="col-12 mt-3 mx-2 mx-md-4">
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">United State</th>
-              <th scope="col">USD</th>
-              <th scope="col">1</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Euro</td>
-              <td>ERO</td>
-              <td>0.000000</td>
-            </tr>
-            <tr>
-              <td>Grate Brtain</td>
-              <td>GBT</td>
-              <td>0.000000</td>
-            </tr>
-            <tr>
-              <td>China</td>
-              <td>CHN</td>
-              <td>0.000000</td>
-            </tr>
-          </tbody>
-        </table>
+        <ShowSomeDetails/>
       </div>
     </div> // end of row
   )// end of return
@@ -127,8 +97,6 @@ class convertExchange extends React.Component {
               <div className="col-12 col-md-4  my-2">
                 <label className=''>To</label>
                 <FillMenu name={'EUR'}/>
-              </div>
-              <div className="d-none col-md-1 d-md-block my-2">
               </div>
             </div>
             <div className = 'row'>

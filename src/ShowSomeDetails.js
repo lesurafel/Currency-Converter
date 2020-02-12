@@ -1,74 +1,66 @@
 import React from 'react';
-import { Link } from "react-router-dom";
-import { json, checkStatus } from './utils';
-import {fullName} from './FullCountryName.js'
+import { checkStatus, json } from './utils';
+import {fullName} from './FullCountryName.js';
+
+const ShowDetail = (props) => {
+  return (
+        <tr>
+          <td>Country Name</td>
+          <th className='d-none d-md-block'>Symbol</th>
+          <td>{props.country}</td>
+          <td>{props.rate}</td>
+        </tr>
+  );
+}
 
 class ShowSomeDetails extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchTerm: '',
-      results: [],
-      error: '',
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    constructor(props) {
+      super(props);
+      this.state = {
+        countrys: ['AUD', 'CAD', 'EUR', 'GBP', 'INR', 'ZAR'],
+        results: null,
+        path: `https://alt-exchange-rate.herokuapp.com/latest?base=USD&symbols=AUD,CAD,EUR,GBP,INR,ZAR`,
+      }
   }
-  handleChange(event) {
-    this.setState({ searchTerm: event.target.value });
-  }
-  handleSubmit(event) {
-    event.preventDefault();
-    let { searchTerm } = this.state;
-    searchTerm = searchTerm.trim();
-    if (!searchTerm) {
-      return;
-    }
-    fetch(`https://alt-exchange-rate.herokuapp.com/latest?base=USD&symbols=EUR,GBP,AUD,CAD,ZAR`)
-      .then(checkStatus)
-      .then(json)
-      .then((data) => {
-        if (data.Response === 'False') {
-          throw new Error(data.Error);
-        }
-        if (data.Response === 'True' && data.Search) {
-          console.log(data);
-          this.setState({ results: data.Search, error: '' });
-        }
-      })
-      .catch((error) => {
-        this.setState({ error: error.message });
-        console.log(error);
-      })
-  }
-  render() {
-    const { searchTerm, results, error } = this.state;
+
+componentDidMount () {
+  const {path} = this.state;
+  fetch(path).then(checkStatus)
+    .then(json)
+    .then((data) => {
+      if (data.Response === 'False') {
+        throw new Error(data.Error);
+      }
+        this.setState({ results: data.rates });
+    })
+    .catch((error) => {
+      return error.message;
+    })
+}
+
+render () {
+    const {countrys, results} = this.state;
+    console.log(results);
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
-            <form onSubmit={this.handleSubmit} className="form-inline my-4">
-              <input
-                type="text"
-                className="form-control mr-sm-2"
-                placeholder="frozen"
-                value={searchTerm}
-                onChange={this.handleChange}
-              />
-              <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
-            {(() => {
-              if (error) {
-                return error;
-              }
-              return results.map((movie) => {
-                return <Movie key={movie.imdbID} movie={movie} />;
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">United State</th>
+            <th scope="col" className='d-none d-md-block'>Symbol</th>
+            <th scope="col">USD</th>
+            <th scope="col">1</th>
+          </tr>
+        </thead>
+        <tbody>
+          {(() => {
+              return countrys.map((country) => {
+                return <ShowDetail key={country} country={country} rates={results} />;
               })
             })()}
-          </div>
-        </div>
-      </div>
-    )
+        </tbody>
+      </table>
+    );
   }
 }
+
 export default ShowSomeDetails;

@@ -6,3 +6,21 @@ export const checkStatus = (response) => {
   throw new Error('Request was either a 404 or 500');
 }
 export const json = (response) => response.json()
+
+/*export const ShowDetails = (countryList) => {
+
+  fetch(countryList).then((respose) => {
+    if(respose.ok) {
+      return respose.json();
+    }
+    throw new Error('Request was either a 404 or 500');
+  }).then((data) => {
+    if (data.Response === 'False') {
+      throw new Error(data.Error);
+    }
+      return data;
+  })
+  .catch((error) => {
+    return error.message;
+  })
+}*/
