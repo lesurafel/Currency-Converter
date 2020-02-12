@@ -23,30 +23,19 @@ const FillMenu = (props) => {
   );
 }
 
-const TopFourList = (props) => {
-  return (
-    <div className="row">
-      <div className="col-12  mt-2 mt-md-4 mx-2 mx-md-4">
-        <Link to="/">Show more detail</Link>
-      </div>
-      <div className="col-12 mt-3 mx-2 mx-md-4">
-        <ShowSomeDetails/>
-      </div>
-    </div> // end of row
-  )// end of return
-}// end of listTopFour
-
 class convertExchange extends React.Component {
   constructor(props) {
     super(props);
-    /*this.state = {
+    this.state = {
       base: '',
       date:'',
       rates: {},
       error: '',
-    };*/
+      showSomedetail: false,
+    };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.TopFourList= this.TopFourList.bind(this);
   }
 
   handleChange(event) {
@@ -56,6 +45,33 @@ class convertExchange extends React.Component {
     event.preventDefault();
 
   }
+
+  TopFourList(props){
+    return (
+      <div className="row">
+        <div className="col-12  mt-2 mt-md-4 mx-2 mx-md-4">
+          {(() => {
+            if (this.showSomedetail) {
+              return <Link to="/">Show more detail</Link>
+            } else {
+              return <Link to="/">Show some detail</Link>
+          }
+          })()}
+        </div>
+        <div className="col-12 mt-3 mx-2 mx-md-4">
+        {(() => {
+          if (this.showSomedetail) {
+            return <ShowSomeDetails path={`https://alt-exchange-rate.herokuapp.com/latest?base=USD&symbols=AUD,CAD,EUR,GBP,INR,ZAR`}/>;
+          } else {
+            return <ShowSomeDetails path={`https://alt-exchange-rate.herokuapp.com/latest?base=USD`}/>;
+        }
+        })()}
+
+        </div>
+      </div> // end of row
+    )// end of return
+  }// end of listTopFour
+
   render() {
     //const { searchTerm, results, error } = this.state;
     return (
@@ -109,7 +125,7 @@ class convertExchange extends React.Component {
       </div>
       <div className='container'>
         <div className='row'>
-          <TopFourList/>
+          <this.TopFourList/>
         </div>
       </div>
       </fragment>

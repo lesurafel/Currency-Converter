@@ -75,3 +75,10 @@ label {
     margin: 1px;
   }
 }
+
+#ctryFlag {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  align-content: center;
+}

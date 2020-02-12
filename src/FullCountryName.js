@@ -4,7 +4,7 @@ export const fullName = {
   BRL: 'Brazilian Real',
   CAD: 'Canadian Dollar',
   CHF: 'Swiss Franc',
-  CNY: 'Yuan Renminbi',
+  CNY: 'Yuan Renminbi (China)',
   CZK: 'Czech Koruna',
   DKK: 'Denmark Krone',
   EUR: 'Euro',
