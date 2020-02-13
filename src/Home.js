@@ -6,23 +6,6 @@ import {fullName} from './FullCountryName.js'
 import ShowSomeDetails from './ShowSomeDetails.js';
 /*import { json, checkStatus } from './utils';*/
 
-const GenerateOptionButton = (props) => {
-  const keyName = props.keyName;
-  return (
-    <option name={keyName}> {keyName} </option>
-  )
-}
-
-const FillMenu = (props) => {
-  const keyNames = Object.keys(fullName);
-  return (
-    <select className="country">
-      <option name={props.name}>{props.name}</option>
-      {keyNames.map(keyName => <GenerateOptionButton key={keyName} keyName = {keyName}/>)}
-    </select>
-  );
-}
-
 class convertExchange extends React.Component {
   constructor(props) {
     super(props);
@@ -31,53 +14,51 @@ class convertExchange extends React.Component {
       date:'',
       rates: {},
       error: '',
-      showSomedetail: false,
+      amount: 0,
+      fstCtryAbb: 'USD',
+      fstCtryFullName: 'US Dollar',
+      fstCtryFlag: 'USD.png',
+      sndCtryAbb: 'EUR',
+      sndCtryFullName: 'Euro',
+      sndCtryFlag: 'EUR.png',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.TopFourList= this.TopFourList.bind(this);
+    this.GenerateOptionButton = this.GenerateOptionButton.bind(this);
+    this.FillMenu = this.FillMenu.bind(this);
   }
 
   handleChange(event) {
     //this.setState({ searchTerm: event.target.value });
   }
+
   handleSubmit(event) {
     event.preventDefault();
-
   }
 
-  TopFourList(props){
+  GenerateOptionButton (props) {
+    const keyName = props.keyName;
     return (
-      <div className="row">
-        <div className="col-12  mt-2 mt-md-4 mx-2 mx-md-4">
-          {(() => {
-            if (this.showSomedetail) {
-              return <Link to="/">Show more detail</Link>
-            } else {
-              return <Link to="/">Show some detail</Link>
-          }
-          })()}
-        </div>
-        <div className="col-12 mt-3 mx-2 mx-md-4">
-        {(() => {
-          if (this.showSomedetail) {
-            return <ShowSomeDetails path={`https://alt-exchange-rate.herokuapp.com/latest?base=USD&symbols=AUD,CAD,EUR,GBP,INR,ZAR`}/>;
-          } else {
-            return <ShowSomeDetails path={`https://alt-exchange-rate.herokuapp.com/latest?base=USD`}/>;
-        }
-        })()}
+      <option name={keyName}> {keyName} </option>
+    )
+  }
 
-        </div>
-      </div> // end of row
-    )// end of return
-  }// end of listTopFour
+  FillMenu(props) {
+    const keyNames = Object.keys(fullName);
+    console.log(props.name);
+    return (
+      <select className="country">
+        <option name={props.name}><div><img id='ctryFlag'src={`./ctryFlag/${props.name}.png`} alt=""/></div>{props.name}</option>
+        {keyNames.map(keyName => <this.GenerateOptionButton key={keyName} keyName = {keyName}/>)}
+      </select>
+    );
+  }
 
   render() {
     //const { searchTerm, results, error } = this.state;
     return (
       <fragment>
       <div id='main' className='container-fluid' >
-
         <div className="container currencyConverter">
           <div className='row'>
             <div className='col-2 pt-2 pt-md-5'>
@@ -85,11 +66,6 @@ class convertExchange extends React.Component {
             </div>
             <div className='col-8 pt-2 pt-md-5 d-flex align-items-center'>
               <h2>Currency Converter</h2>
-            </div>
-          </div>
-          <div className='row'>
-            <div className='col-12 pt-3 d-flex justify-content-end align-items-end'>
-              <h2>Date</h2>
             </div>
           </div>
           <form onSubmit={this.handleSubmit} className="my-1 my-md-4">
@@ -105,14 +81,14 @@ class convertExchange extends React.Component {
               </div>
               <div className="col-12 col-md-4 my-2">
                 <label className=''>From</label>
-                <FillMenu name={'USD'}  />
+                <this.FillMenu name={this.state.fstCtryAbb}/>
               </div>
               <div className="d-none col-md-1 pt-md-4 px-sm-1 d-md-flex align-items-center">
                 <img src={backforth} height='60' width='60' alt="12345" />
               </div>
               <div className="col-12 col-md-4  my-2">
                 <label className=''>To</label>
-                <FillMenu name={'EUR'}/>
+                <this.FillMenu name={this.state.sndCtryAbb}/>
               </div>
             </div>
             <div className = 'row'>
@@ -121,11 +97,16 @@ class convertExchange extends React.Component {
               </div>
             </div>
           </form>
+          <div className='row'>
+            <div className='col-12 pt-3 d-flex justify-content-end align-items-end'>
+              <h2>Date</h2>
+            </div>
+          </div>
         </div>
       </div>
       <div className='container'>
         <div className='row'>
-          <this.TopFourList/>
+          <ShowSomeDetails/>
         </div>
       </div>
       </fragment>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import { checkStatus, json } from './utils';
 import {fullName} from './FullCountryName.js';
 const ShowDetail = (props) => {
@@ -16,13 +17,34 @@ class ShowSomeDetails extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        countrys: ['AUD', 'CAD', 'EUR', 'GBP', 'INR', 'ZAR'],
         results: null,
-        path: props.path,
+        path: `https://alt-exchange-rate.herokuapp.com/latest?base=USD&symbols=AUD,CAD,EUR,GBP,INR,ZAR`,
+        showSomedetail: true,
+        showDetailMenu: "Show more detail"
       }
+      this.changeShowStatus = this.changeShowStatus.bind(this);
+      this.updateData = this.updateData.bind(this);
   }
 
-componentDidMount () {
+  changeShowStatus(event) {
+    event.preventDefault();
+    if (this.state.showSomedetail) {
+      this.setState({
+        showSomedetail: false,
+        showDetailMenu: "Show more detail",
+        path: `https://alt-exchange-rate.herokuapp.com/latest?base=USD`,
+      });
+    } else {
+      this.setState({
+        showSomedetail: true,
+        showDetailMenu: "Show some detail",
+        path: `https://alt-exchange-rate.herokuapp.com/latest?base=USD&symbols=AUD,CAD,EUR,GBP,INR,ZAR`,
+      });
+    }
+    this.updateData();
+  }
+
+updateData () {
   const {path} = this.state;
   fetch(path).then(checkStatus)
     .then(json)
@@ -37,10 +59,19 @@ componentDidMount () {
     })
 }
 
+componentDidMount () {
+  this.updateData();
+}
+
 render () {
-    const {countrys, results} = this.state;
-    const keyNames = Object.keys(fullName);
+    const {results} = this.state;
     return (
+      <div className='w-100'>
+      <div className="row">
+        <div className="col-12  mt-2 mt-md-4 mx-2 mx-md-4">
+          <Link to="/" onClick={this.changeShowStatus}>{this.state.showDetailMenu}</Link>
+        </div>
+      </div>
       <table className="table table-striped table-hover align-content-center">
         <thead>
           <tr>
@@ -55,12 +86,15 @@ render () {
             if(!results) {
               return;
             }
-            return keyNames.map((keyName) => {
+            const {rates} = results;
+            const ctryAbb = Object.keys(rates);
+            return ctryAbb.map((keyName) => {
               return <ShowDetail key={keyName} ctryName={fullName[keyName]} ctryFlag={`./ctryFlag/${keyName}.png`} country={keyName} rates={results.rates[keyName]} />;
             })
           })()}
         </tbody>
       </table>
+      </div>
     );
   }
 }
