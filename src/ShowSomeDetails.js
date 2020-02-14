@@ -23,7 +23,7 @@ class ShowSomeDetails extends React.Component {
         results: null,
         path: `https://alt-exchange-rate.herokuapp.com/latest?base=USD&symbols=AUD,CAD,EUR,GBP,INR,ZAR`,
         showSomedetail: true,
-        showDetailMenu: "Show some detail",
+        showDetailMenu: "Show more detail",
         timer: null
       }
       this.changeShowStatus = this.changeShowStatus.bind(this);
