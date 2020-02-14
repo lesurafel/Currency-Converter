@@ -145,56 +145,56 @@ class convertExchange extends React.Component {
   render() {
     const { amount, fstCtryAbb, sndCtryAbb } = this.state;
     return (
-      <fragment>
-      <div id='main' className='container-fluid' >
-        <div className="container currencyConverter">
-          <div className='row'>
-            <div className='col-2 pt-1 pt-md-5'>
-              <Link className="navbar-brand logo" to="/"><img src={logo} height='80' width='80' alt="logo" /></Link>
+      <React.Fragment>
+        <div id='main' className='container-fluid' >
+          <div className="container currencyConverter">
+            <div className='row'>
+              <div className='col-2 pt-1 pt-md-5'>
+                <Link className="navbar-brand logo" to="/"><img src={logo} height='80' width='80' alt="logo" /></Link>
+              </div>
+              <div className='col-8 pt-1 pt-md-5 d-flex align-items-center'>
+                <h2>Currency Converter</h2>
+              </div>
             </div>
-            <div className='col-8 pt-1 pt-md-5 d-flex align-items-center'>
-              <h2>Currency Converter</h2>
-            </div>
+            <form onSubmit={this.handleSubmit} className="my-1 my-md-4">
+              <div className="row">
+                <div className="col-12 col-md-3 my-1 my-md-2">
+                  <label className=''>Amount</label>
+                  <input
+                    className="mr-sm-2 amount"
+                    name = "amount"
+                    value = {amount}
+                    type = "text"
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div className="col-12 col-md-4 my-2">
+                  <label className=''>From</label>
+                  <this.FillMenu name="fstOptionBtn" value={fstCtryAbb} />
+                </div>
+                <div className="d-none col-md-1 pt-md-4 px-sm-1 d-md-flex align-items-center backforth">
+                  <img src={backforth} height='60' width='60' alt="12345" onClick={this.swapCountry}/>
+                </div>
+                <div className="col-12 col-md-4  my-2">
+                  <label className=''>To</label>
+                  <this.FillMenu name="sndOptionBtn" value={sndCtryAbb}/>
+                </div>
+              </div>
+              <div className = 'row'>
+                <div className="col-12 justify-content-end d-flex pt-2 pl-2">
+                  <button type="submit" className="btn btn-secondary btn-lg"> Convert </button>
+                </div>
+              </div>
+            </form>
+            <this.showResult/>
           </div>
-          <form onSubmit={this.handleSubmit} className="my-1 my-md-4">
-            <div className="row">
-              <div className="col-12 col-md-3 my-1 my-md-2">
-                <label className=''>Amount</label>
-                <input
-                  className="mr-sm-2 amount"
-                  name = "amount"
-                  value = {amount}
-                  type = "text"
-                  onChange={this.handleChange}
-                />
-              </div>
-              <div className="col-12 col-md-4 my-2">
-                <label className=''>From</label>
-                <this.FillMenu name="fstOptionBtn" value={fstCtryAbb} />
-              </div>
-              <div className="d-none col-md-1 pt-md-4 px-sm-1 d-md-flex align-items-center backforth">
-                <img src={backforth} height='60' width='60' alt="12345" onClick={this.swapCountry}/>
-              </div>
-              <div className="col-12 col-md-4  my-2">
-                <label className=''>To</label>
-                <this.FillMenu name="sndOptionBtn" value={sndCtryAbb}/>
-              </div>
-            </div>
-            <div className = 'row'>
-              <div className="col-12 justify-content-end d-flex pt-2 pl-2">
-                <button type="submit" className="btn btn-secondary btn-lg"> Convert </button>
-              </div>
-            </div>
-          </form>
-          <this.showResult/>
         </div>
-      </div>
-      <div className='container'>
-        <div className='row'>
-          <ShowSomeDetails/>
+        <div className='container'>
+          <div className='row'>
+            <ShowSomeDetails/>
+          </div>
         </div>
-      </div>
-      </fragment>
+      </React.Fragment>
     )
   }// End of Render
 }// End of converExchange
