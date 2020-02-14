@@ -48,15 +48,36 @@ label {
 .country-list,
 .amount {
   width: 100%;
-  height: 60px;
+  height: 50px;
   border-radius: 10px;
-  font-size: 25px;
+  font-size: 20px;
   color: black;
   text-align: center;
 }
 
+.country {
+  overflow-y: scroll;
+}
+
+@media (min-width: 768px) {
+  .country,
+  .country-list,
+  .amount {
+    height: 60px;
+    font-size: 25px;
+  }
+}
+
 .amount {
   text-align: center;
+}
+
+#result {
+  font-size: 30px;
+}
+
+.resultBox {
+  color: white;
 }
 
 /* For Footer */
@@ -81,4 +102,8 @@ label {
   width: 40px;
   height: 40px;
   align-content: center;
+}
+
+.backforth {
+  cursor: pointer;
 }
