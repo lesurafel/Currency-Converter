@@ -6,7 +6,6 @@ import backforth from './images/backforth.png';
 import {fullName} from './FullCountryName.js';
 import ShowSomeDetails from './ShowSomeDetails.js';
 
-/*import { json, checkStatus } from './utils';*/
 
 class convertExchange extends React.Component {
   constructor(props) {
@@ -42,6 +41,7 @@ class convertExchange extends React.Component {
     } else {
       this.setState({amount: ''});
     }
+
   }
 
   openDatabase() {
@@ -52,15 +52,17 @@ class convertExchange extends React.Component {
           throw new Error(data.Error);
         }
           this.setState({
-            rate: data.rates[this.state.sndCtryAbb],
+            rate: (data.rates[this.state.sndCtryAbb]).toFixed(4),
             date: data.date
           });
+          console.log(this.state.rate);
           this.convertTo();
       })
       .catch((error) => {
         return error.message;
       })
   }
+
   handleSubmit(event) {
     event.preventDefault();
     this.openDatabase();
@@ -68,10 +70,10 @@ class convertExchange extends React.Component {
 
   convertTo() {
     const { rate, amount} = this.state;
-    if(amount) {
+    if(amount && rate) {
       this.setState({
-        result: rate * amount.toFixed(4),
-        reversRate: 1/rate
+        result: (rate * amount).toFixed(4),
+        reversRate: (1/rate).toFixed(4),
       });
     }
   }
@@ -87,22 +89,23 @@ class convertExchange extends React.Component {
         sndCtryAbb: value
       });
     }
+    this.setState({result:0});
   }
 
   swapCountry(){
-    const {fstCtryAbb, sndCtryAbb} = this.state;
-    const temp = fstCtryAbb;
+    const {fstCtryAbb, sndCtryAbb } = this.state;
+    const tempCtry = fstCtryAbb;
     this.setState({
       fstCtryAbb: sndCtryAbb,
-      sndCtryAbb: temp
+      sndCtryAbb: tempCtry,
+      result: 0
     });
-    this.openDatabase();
   }
 
   GenerateOptionButton (props) {
     const ctryAbb = props.ctryAbb;
     return (
-      <option> {ctryAbb} </option>
+      <option>{ctryAbb}</option>
     )
   }
 
@@ -117,7 +120,7 @@ class convertExchange extends React.Component {
   }
 
   showResult(){
-    const { date, rate, reversRate, result, fstCtryAbb, sndCtryAbb } = this.state;
+    const { amount, date, rate, reversRate, result, fstCtryAbb, sndCtryAbb } = this.state;
     if(!result) {
       return <div></div>;
     }
@@ -130,7 +133,7 @@ class convertExchange extends React.Component {
         </div>
         <div className='row'>
           <div className='col-12 pt-1 pt-md-3 resultBox'>
-            <p>1 {fstCtryAbb} = <span id="result"> {result} {sndCtryAbb}</span></p>
+            <p>{amount} {fstCtryAbb} = <span id="result"> {result} {sndCtryAbb}</span></p>
             <p>1 {fstCtryAbb} = {rate} {sndCtryAbb}</p>
             <p>1 {sndCtryAbb} = {reversRate} {fstCtryAbb}</p>
           </div>

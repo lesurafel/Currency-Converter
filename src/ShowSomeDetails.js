@@ -3,13 +3,16 @@ import { Link } from "react-router-dom";
 import { checkStatus, json } from './utils';
 import {fullName} from './FullCountryName.js';
 const ShowDetail = (props) => {
+  if(props.country==='USD') {
+    return null;
+  }
   return (
-        <tr>
-          <td >{props.ctryName}</td>
-          <td className='d-none d-md-block'><img id='ctryFlag'src={props.ctryFlag} alt=""/></td>
-          <td >{props.country}</td>
-          <td >{props.rates}</td>
-        </tr>
+    <tr>
+      <td >{props.ctryName}</td>
+      <td className='d-none d-md-block'><img id='ctryFlag'src={props.ctryFlag} alt=""/></td>
+      <td >{props.country}</td>
+      <td >{props.rates}</td>
+    </tr>
   );
 }
 
@@ -20,7 +23,8 @@ class ShowSomeDetails extends React.Component {
         results: null,
         path: `https://alt-exchange-rate.herokuapp.com/latest?base=USD&symbols=AUD,CAD,EUR,GBP,INR,ZAR`,
         showSomedetail: true,
-        showDetailMenu: "Show more detail"
+        showDetailMenu: "Show more detail",
+        timer: null
       }
       this.changeShowStatus = this.changeShowStatus.bind(this);
       this.updateData = this.updateData.bind(this);
@@ -60,7 +64,14 @@ updateData () {
 }
 
 componentDidMount () {
-  this.updateData();
+  this.timer = setInterval(
+      () => this.updateData(),
+      1000
+  );
+}
+
+componentWillUnmount () {
+  clearInterval(this.timer);
 }
 
 render () {
