@@ -22,7 +22,8 @@ class convertExchange extends React.Component {
       sndCtryFullName: 'Euro',
       sndCtryFlag: 'EUR.png',
       rate: 0,
-      reversRate: 0
+      reversRate: 0,
+      start: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -41,7 +42,7 @@ class convertExchange extends React.Component {
     } else {
       this.setState({amount: ''});
     }
-
+    this.openDatabase();
   }
 
   openDatabase() {
@@ -65,6 +66,7 @@ class convertExchange extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    this.setState({start: true});
     this.openDatabase();
   }
 
@@ -89,7 +91,10 @@ class convertExchange extends React.Component {
         sndCtryAbb: value
       });
     }
-    this.setState({result:0});
+    this.setState({
+      result:0,
+      amount:1
+    });
   }
 
   swapCountry(){
@@ -98,7 +103,8 @@ class convertExchange extends React.Component {
     this.setState({
       fstCtryAbb: sndCtryAbb,
       sndCtryAbb: tempCtry,
-      result: 0
+      result: 0,
+      amount: 1
     });
   }
 
@@ -120,8 +126,8 @@ class convertExchange extends React.Component {
   }
 
   showResult(){
-    const { amount, date, rate, reversRate, result, fstCtryAbb, sndCtryAbb } = this.state;
-    if(!result) {
+    const { amount, date, rate, reversRate, start, result, fstCtryAbb, sndCtryAbb } = this.state;
+    if(!start || !result) {
       return <div></div>;
     }
     return (
