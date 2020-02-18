@@ -1,7 +1,7 @@
 import React from 'react';
 const Footer = () => {
   return (
-    <div className = "container">
+    <div className = "container my-5">
       <div className="row border-top p-2">
         <div className="col-12 col-md-6 my-2">
           <p><small className="text-secondary">Copyright © Surafel Seyoum. 2020. All Rights Reserved</small></p>

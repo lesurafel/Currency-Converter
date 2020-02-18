@@ -5,6 +5,7 @@ import logo from './images/logo.png';
 import backforth from './images/backforth.png';
 import {fullName} from './FullCountryName.js';
 import ShowSomeDetails from './ShowSomeDetails.js';
+import Chart from 'chart.js';
 
 
 class convertExchange extends React.Component {
@@ -33,6 +34,7 @@ class convertExchange extends React.Component {
     this.swapCountry = this.swapCountry.bind(this);
     this.showResult = this.showResult.bind(this);
     this.convertTo = this.convertTo.bind(this);
+    this.chartRef = React.createRef();
   }
 
   handleChange(event) {
@@ -46,7 +48,8 @@ class convertExchange extends React.Component {
   }
 
   openDatabase() {
-    fetch(`https://alt-exchange-rate.herokuapp.com/latest?base=${this.state.fstCtryAbb}&symbols=${this.state.sndCtryAbb}`).then(checkStatus)
+    fetch(`https://alt-exchange-rate.herokuapp.com/latest?base=${this.state.fstCtryAbb}&symbols=${this.state.sndCtryAbb}`)
+      .then(checkStatus)
       .then(json)
       .then((data) => {
         if (data.Response === 'False') {
@@ -78,6 +81,7 @@ class convertExchange extends React.Component {
         reversRate: (1/rate).toFixed(4),
       });
     }
+    this.getHistoricalRates();
   }
 
   handleBaseAmount(event) {
@@ -148,6 +152,60 @@ class convertExchange extends React.Component {
     )
   }
 
+  showChart = () => {
+    const { start, result } = this.state;
+    if(!start || !result) {
+      return <div></div>;
+    }
+    return (
+      <canvas ref={this.chartRef} />
+    );
+  }
+  ////////////////////////////
+  getHistoricalRates = () => {
+    const {fstCtryAbb, sndCtryAbb} = this.state;
+    const endDate = new Date().toISOString().split('T')[0];
+    const startDate = new Date((new Date).getTime() - (30 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
+    fetch(`https://alt-exchange-rate.herokuapp.com/history?start_at=${startDate}&end_at=${endDate}&base=${fstCtryAbb}&symbols=${sndCtryAbb}`)
+      .then(checkStatus)
+      .then(json)
+      .then(data => {
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        const chartLabels = Object.keys(data.rates);
+        const chartData = Object.values(data.rates).map(rate => rate[sndCtryAbb]);
+        const chartLabel = `${fstCtryAbb}/${sndCtryAbb}`;
+        this.buildChart(chartLabels, chartData, chartLabel);
+      })
+      .catch(error => console.error(error.message));
+  }
+
+  buildChart = (labels, data, label) => {
+    const chartRef = this.chartRef.current.getContext("2d");
+    if (typeof this.chart !== "undefined") {
+      this.chart.destroy();
+    }
+    this.chart = new Chart(this.chartRef.current.getContext("2d"), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: label,
+            data,
+            fill: false,
+            tension: 0,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+      }
+    })
+  }
+  //////////////////////////////////////
+
   render() {
     const { amount, fstCtryAbb, sndCtryAbb } = this.state;
     return (
@@ -199,6 +257,7 @@ class convertExchange extends React.Component {
           <div className='row'>
             <ShowSomeDetails/>
           </div>
+            <this.showChart/>
         </div>
       </React.Fragment>
     )
